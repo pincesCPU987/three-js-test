@@ -24,29 +24,29 @@
       var camerax = 0;
       var cameray = 0;
       document.body.addEventListener('keydown', function(e){
-        if(e.keyCode == 87){
+        if(e.code == 87){
           cameraz = 10;
           log(cameraz);
         }
-        if(e.keyCode == 83){
+        if(e.code == 83){
           cameraz = -10;
           log(cameraz);
         }
-        if(e.keyCode == 65){
+        if(e.code == 65){
           camerax = -10;
           log(camerax);
         }
-        if(e.keyCode == 68){
+        if(e.code == 68){
           camerax = 10;
           log(camerax);
         }
       });
       document.body.addEventListener('keyup',function(e){
-        if(e.keyCode == 87 || e.keyCode == 83){
+        if(e.code == 87 || e.code == 83){
           cameraz = 0;
           log(cameraz)
         }
-        if(e.keyCode == 65 || e.keyCode == 68){
+        if(e.code == 65 || e.code == 68){
           camerax = 0;
           log(camerax)
         }
