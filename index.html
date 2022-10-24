@@ -8,7 +8,7 @@
     </style>
   </head>
   <body>
-    <script src="/js/three.js"></script>
+    <script src="https://pincescpu987.github.io/js/three.js"></script>
     <script>
    	const log = console.log;
       const scene = new THREE.Scene();
@@ -19,44 +19,56 @@
       const geometry = new THREE.BoxGeometry( 1, 1, 1 );
       const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
       const cube = new THREE.Mesh( geometry, material );
+      camera.position.z = 5
       scene.add( cube );
       var cameraz = 0;
       var camerax = 0;
       var cameray = 0;
+      function setPlayerDirection(){
+        //direction changed.
+        var delta_x = playerSpeed * Math.cos(playerDirection);
+        var delta_z = playerSpeed * Math.sin(playerDirection);
+
+        var new_dx = camera.position.x + delta_x;
+        var new_dz = camera.position.z + delta_z;
+        dVector.x = new_dx;
+        dVector.z = new_dz;
+        console.log(dVector);
+        camera.lookAt( dVector ); 
+      }
       document.body.addEventListener('keydown', function(e){
-        if(e.code == 87){
-          cameraz = 10;
+        if(e.code == 'ArrowDown'){
+          cameraz = 0.1;
           log(cameraz);
         }
-        if(e.code == 83){
-          cameraz = -10;
+        if(e.code == 'ArrowUp'){
+          cameraz = -0.1;
           log(cameraz);
         }
-        if(e.code == 65){
-          camerax = -10;
+        if(e.code == 'ArrowLeft'){
+          camerax = -0.1;
           log(camerax);
         }
-        if(e.code == 68){
-          camerax = 10;
+        if(e.code == 'ArrowRight'){
+          camerax = 0.1;
           log(camerax);
         }
       });
       document.body.addEventListener('keyup',function(e){
-        if(e.code == 87 || e.code == 83){
+      log(e.code)
+        if(e.code == 'ArrowUp' || e.code == 'ArrowDown'){
           cameraz = 0;
           log(cameraz);
         }
-        if(e.code == 65 || e.code == 68){
+        if(e.code == 'ArrowLeft' || e.code == 'ArrowRight'){
           camerax = 0;
           log(camerax);
         }
       });
-      camera.position.z += cameraz;
-      camera.position.x += camerax;
       function animate() {
         requestAnimationFrame( animate );
-        cube.rotation.x += 0.1;
-        cube.rotation.y += 0.1;
+        camera.position.z = camera.position.z + cameraz;
+        camera.position.x = camera.position.x + camerax;
         renderer.render( scene, camera );
       }
       animate();
