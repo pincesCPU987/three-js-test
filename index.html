@@ -8,9 +8,9 @@
     </style>
   </head>
   <body>
-    <script src="https://pincescpu987.github.io/three-js-test/js/three.js"></script>
+    <script src="/js/three.js"></script>
     <script>
-   	const log = console.log
+   	const log = console.log;
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
       const renderer = new THREE.WebGLRenderer();
@@ -44,11 +44,11 @@
       document.body.addEventListener('keyup',function(e){
         if(e.code == 87 || e.code == 83){
           cameraz = 0;
-          log(cameraz)
+          log(cameraz);
         }
         if(e.code == 65 || e.code == 68){
           camerax = 0;
-          log(camerax)
+          log(camerax);
         }
       });
       camera.position.z += cameraz;
