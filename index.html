@@ -19,50 +19,66 @@
       const geometry = new THREE.BoxGeometry( 1, 1, 1 );
       const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
       const cube = new THREE.Mesh( geometry, material );
-      camera.position.z = 5
+      camera.position.z = 5;
       scene.add( cube );
       var cameraz = 0;
       var camerax = 0;
       var cameray = 0;
-      function setPlayerDirection(){
-        //direction changed.
-        var delta_x = playerSpeed * Math.cos(playerDirection);
-        var delta_z = playerSpeed * Math.sin(playerDirection);
-
-        var new_dx = camera.position.x + delta_x;
-        var new_dz = camera.position.z + delta_z;
-        dVector.x = new_dx;
-        dVector.z = new_dz;
-        console.log(dVector);
-        camera.lookAt( dVector ); 
+      var speed = 0.1;
+      var movementz = 0;
+      var movementx = 0;
+      function move(){
+      	//Angle that we know
+        var angle1 = (camera.rotation.x) + 1.5708;
+        //Other angle besides the 90 degree angle
+        var angle2 = 3.14159 - 1.5708 - angle1;
+        var dz = 0;
+        if(camera.rotation.x > -1.5708 && camera.rotation.x < 1.5708){
+        	dz = -1;
+        }
+   			if(camera.rotation.x < -1.5708 || camera.rotation.x > 1.5708){
+        	dz = 1;
+        }
+        var dx = 0;
+        if(camera.rotation.x < 0){
+        	dx = -1;
+        }
+        if(camera.rotation.x > 0){
+        	dx = 1;
+        }
+        //Change Z
+        var cz = (Math.sin(angle1 * (Math.PI/180)) / speed) * dz;
+        movementz = cz;
+        var cx = (Math.cos(angle1 * (Math.PI/180)) / speed) * dx;
+        movementx = cx;
       }
       document.body.addEventListener('keydown', function(e){
-        if(e.code == 'ArrowDown'){
-          cameraz = 0.1;
-          log(cameraz);
+      	move();
+        log(movementz)
+        log(movementx)
+        if(e.code == 'KeyS'){
+          cameraz = movementz;
+          camerax = movementx;
         }
-        if(e.code == 'ArrowUp'){
-          cameraz = -0.1;
-          log(cameraz);
+        if(e.code == 'KeyW'){
+          cameraz = -movementz;
         }
-        if(e.code == 'ArrowLeft'){
-          camerax = -0.1;
-          log(camerax);
+        if(e.code == 'KeyA'){
+          camerax = -movementx;
         }
-        if(e.code == 'ArrowRight'){
-          camerax = 0.1;
-          log(camerax);
+        if(e.code == 'KeyD'){
+          camerax = movementx;
+        }
+        if(e.code == 'LeftArrow'){
+        	
         }
       });
       document.body.addEventListener('keyup',function(e){
-      log(e.code)
-        if(e.code == 'ArrowUp' || e.code == 'ArrowDown'){
+        if(e.code == 'KeyW' || e.code == 'KeyS'){
           cameraz = 0;
-          log(cameraz);
         }
-        if(e.code == 'ArrowLeft' || e.code == 'ArrowRight'){
+        if(e.code == 'KeyA' || e.code == 'KeyD'){
           camerax = 0;
-          log(camerax);
         }
       });
       function animate() {
