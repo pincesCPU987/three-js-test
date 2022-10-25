@@ -8,7 +8,7 @@
     </style>
   </head>
   <body>
-    <script src="https://pincescpu987.github.io/js/three.js"></script>
+    <!--<script type="text/javascript" src="https://pincescpu987.github.io/js/three.js"></script>-->
     <script>
    	const log = console.log;
       const scene = new THREE.Scene();
@@ -29,62 +29,82 @@
       var movementx = 0;
       function move(){
       	//Angle that we know
-        var angle1 = (camera.rotation.x) + 1.5708;
+        var angle1 = (camera.rotation.y) + 1.5708;
         //Other angle besides the 90 degree angle
         var angle2 = 3.14159 - 1.5708 - angle1;
         var dz = 0;
-        if(camera.rotation.x > -1.5708 && camera.rotation.x < 1.5708){
+        log('Rotation: ' + camera.rotation.y)
+        if(camera.rotation.y > -1.5708 && camera.rotation.y < 1.5708){
         	dz = -1;
         }
-   			if(camera.rotation.x < -1.5708 || camera.rotation.x > 1.5708){
+   	    if(camera.rotation.y < -1.5709 || camera.rotation.y > 1.5709){
         	dz = 1;
         }
         var dx = 0;
-        if(camera.rotation.x < 0){
-        	dx = -1;
-        }
-        if(camera.rotation.x > 0){
+        if(camera.rotation.y < -0.00001){
         	dx = 1;
+        }
+        if(camera.rotation.y > 0.00001){
+        	dx = -1;
         }
         //Change Z
         var cz = (Math.sin(angle1 * (Math.PI/180)) / speed) * dz;
         movementz = cz;
+        //log('cz:' + cz)
+        //log('dz' + dz)
         var cx = (Math.cos(angle1 * (Math.PI/180)) / speed) * dx;
         movementx = cx;
+        //log('cx:' + cx)
+        //log('dx' + dx)
       }
+      var ry = 0;
       document.body.addEventListener('keydown', function(e){
       	move();
-        log(movementz)
-        log(movementx)
+        //log(movementz)
+        //log(movementx)
         if(e.code == 'KeyS'){
-          cameraz = movementz;
-          camerax = movementx;
+          cameraz = -movementz;
+          camerax = (movementx != 0 ? -1/movementx : 0);
         }
         if(e.code == 'KeyW'){
-          cameraz = -movementz;
+          cameraz = movementz;
+          camerax = (movementx != 0 ? 1/movementx : 0);
         }
         if(e.code == 'KeyA'){
-          camerax = -movementx;
+          cameraz = (movementx != 0 ? Math.pow(movementx,-1) : 0);
+          camerax = movementz;
         }
         if(e.code == 'KeyD'){
-          camerax = movementx;
+          cameraz = (movementx != 0 ? (Math.pow(movementx,-1) * -1) : 0);
+          camerax = -movementz;
         }
-        if(e.code == 'LeftArrow'){
-        	
+        if(e.code == 'ArrowLeft'){
+        	ry = 0.05;
         }
+        if(e.code == 'ArrowRight'){
+        	ry = -0.05;
+        }
+        //log(cameraz)
+        //log(camerax)
       });
       document.body.addEventListener('keyup',function(e){
         if(e.code == 'KeyW' || e.code == 'KeyS'){
           cameraz = 0;
+          camerax = 0;
         }
         if(e.code == 'KeyA' || e.code == 'KeyD'){
           camerax = 0;
+          cameraz = 0;
+        }
+        if(e.code == 'ArrowLeft' || e.code == 'ArrowRight'){
+          ry = 0;
         }
       });
       function animate() {
         requestAnimationFrame( animate );
         camera.position.z = camera.position.z + cameraz;
         camera.position.x = camera.position.x + camerax;
+        camera.rotation.y += ry;
         renderer.render( scene, camera );
       }
       animate();
