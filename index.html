@@ -8,7 +8,7 @@
     </style>
   </head>
   <body>
-    <!--<script type="text/javascript" src="https://pincescpu987.github.io/js/three.js"></script>-->
+    <script type="text/javascript" src="https://pincescpu987.github.io/js/three.js"></script>
     <script>
    	const log = console.log;
       const scene = new THREE.Scene();
@@ -71,12 +71,12 @@
           camerax = (movementx != 0 ? 1/movementx : 0);
         }
         if(e.code == 'KeyA'){
-          cameraz = (movementx != 0 ? Math.pow(movementx,-1) : 0);
-          camerax = movementz;
+          cameraz = movementz;
+          camerax = (movementx != 0 ? Math.pow(movementx,-1) : 0);
         }
         if(e.code == 'KeyD'){
-          cameraz = (movementx != 0 ? (Math.pow(movementx,-1) * -1) : 0);
-          camerax = -movementz;
+          cameraz = -movementz;
+          camerax = (movementx != 0 ? (Math.pow(movementx,-1) * -1) : 0);
         }
         if(e.code == 'ArrowLeft'){
         	ry = 0.05;
