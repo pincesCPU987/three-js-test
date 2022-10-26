@@ -8,12 +8,9 @@
     </style>
   </head>
   <body>
-    <script type="text/javascript" src="https://pincescpu987.github.io/js/three.js"></script>
+    <!--<script type="text/javascript" src="https://pincescpu987.github.io/js/three.js"></script>-->
     <script>
    	const log = console.log;
-   	const degrad = (abc) => {
-   	   return THREE.Math.degToRad(abc);
-   	  }
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
       const renderer = new THREE.WebGLRenderer();
@@ -22,41 +19,40 @@
       const geometry = new THREE.BoxGeometry( 1, 1, 1 );
       const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
       const cube = new THREE.Mesh( geometry, material );
-      camera.position.z = -5;
-      camera.rotation.y = degrad(180);
+      camera.position.z = 5;
       scene.add( cube );
       var cameraz = 0;
       var camerax = 0;
       var cameray = 0;
-      var speed = 1;
+      var speed = 0.1;
       var movementz = 0;
       var movementx = 0;
       function move(){
       	//Angle that we know
-        var angle1 = (camera.rotation.y < 0 ? camera.rotation.y + degrad(360) : camera.rotation.y);
+        var angle1 = (camera.rotation.y) + 1.5708;
         //Other angle besides the 90 degree angle
-        var angle2 = degrad(180) - degrad(90) - angle1;
+        var angle2 = 3.14159 - 1.5708 - angle1;
         var dz = 0;
         log('Rotation: ' + camera.rotation.y)
-        if(angle1 < degrad(90) || angle1 > degrad(270)){
+        if(camera.rotation.y > -1.5708 && camera.rotation.y < 1.5708){
         	dz = -1;
         }
-   	    if(angle1 < degrad(270) && angle1 > degrad(90)){
+   	    if(camera.rotation.y < -1.5709 || camera.rotation.y > 1.5709){
         	dz = 1;
         }
         var dx = 0;
-        if(angle1 < degrad(180)){
-        	dx = -1;
-        }
-        if(angle1 > degrad(180)){
+        if(camera.rotation.y < -0.00001){
         	dx = 1;
         }
-        //cz stands for Change Z
-        var cz = (Math.sin((angle1) * (180/Math.PI)) * speed) * dz;
+        if(camera.rotation.y > 0.00001){
+        	dx = -1;
+        }
+        //Change Z
+        var cz = (Math.sin(angle1 * (Math.PI/180)) / speed) * dz;
         movementz = cz;
         //log('cz:' + cz)
         //log('dz' + dz)
-        var cx = (Math.cos(angle1 * (180/Math.PI)) * speed) * dx;
+        var cx = (Math.cos(angle1 * (Math.PI/180)) / speed) * dx;
         movementx = cx;
         //log('cx:' + cx)
         //log('dx' + dx)
@@ -68,19 +64,19 @@
         //log(movementx)
         if(e.code == 'KeyS'){
           cameraz = -movementz;
-          camerax = -movementx;
+          camerax = (movementx != 0 ? -1/movementx : 0);
         }
         if(e.code == 'KeyW'){
           cameraz = movementz;
-          camerax = movementx;
+          camerax = (movementx != 0 ? 1/movementx : 0);
         }
         if(e.code == 'KeyA'){
-          cameraz = (movementx != 0 ? -1/movementz : 0);
-          camerax = (movementz != 0 ? 1/movementz : 0);
+          cameraz = (movementx != 0 ? Math.pow(movementx,-1) : 0);
+          camerax = movementz;
         }
         if(e.code == 'KeyD'){
-          cameraz = (movementx != 0 ? 1/movementx : 0);
-          camerax = (movementz != 0 ? -1/movementz : 0);
+          cameraz = (movementx != 0 ? (Math.pow(movementx,-1) * -1) : 0);
+          camerax = -movementz;
         }
         if(e.code == 'ArrowLeft'){
         	ry = 0.05;
